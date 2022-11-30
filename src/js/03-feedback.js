@@ -20,7 +20,7 @@ class LocalStorage {
 
 LocalStorage.storageKey = 'feedback-form-state';
 
-const CurrentFormValues = {
+const currentFormValues = {
   email: '',
   message: '',
 };
@@ -30,9 +30,9 @@ const feedbackForm = document.querySelector('.feedback-form');
 const onInputHandler = event => {
   event.preventDefault();
 
-  CurrentFormValues[event.target.name] = event.target.value;
+  currentFormValues[event.target.name] = event.target.value;
   try {
-    LocalStorage.save(JSON.stringify(CurrentFormValues));
+    LocalStorage.save(JSON.stringify(currentFormValues));
   } catch (error) {
     console.log(error);
   }
@@ -42,13 +42,13 @@ const onSubmitHandler = event => {
   event.preventDefault();
 
   [...event.currentTarget.elements]
-    .filter(({ type }) => type != 'submit')
+    .filter(({ type }) => type !== 'submit')
     .forEach(element => {
-      CurrentFormValues[element.name] = element.value;
+      currentFormValues[element.name] = element.value;
       element.value = '';
     });
 
-  console.log(CurrentFormValues);
+  console.log(currentFormValues);
   LocalStorage.remove();
 };
 
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     const tmp = JSON.parse(LocalStorage.read());
     if (tmp) {
-      CurrentFormValues.email = tmp.email;
-      CurrentFormValues.message = tmp.message;
+      currentFormValues.email = tmp.email;
+      currentFormValues.message = tmp.message;
       feedbackForm.elements['email'].value = tmp.email;
       feedbackForm.elements['message'].value = tmp.message;
     }
